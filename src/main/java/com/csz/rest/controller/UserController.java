@@ -1,8 +1,10 @@
 package com.csz.rest.controller;
 
 import com.csz.rest.model.User;
+import com.csz.rest.service.UserService;
 import com.csz.rest.validation.ValidGroup;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/user")
     public User getUser(int id) {
         User user = new User();
@@ -22,6 +27,7 @@ public class UserController {
     @PostMapping("/user/create")
     public String create(@Validated(value = ValidGroup.Crud.Create.class) @RequestBody User user) {
         log.info("create user:{}", user);
+        userService.addUser(user);
         return "user created";
     }
 
