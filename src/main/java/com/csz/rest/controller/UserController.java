@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @Slf4j
 public class UserController {
@@ -20,32 +22,22 @@ public class UserController {
 
     @GetMapping("/user")
     public User getUser(int id) {
-        User user = new User();
-        return user;
+        Optional<User> oUser = userService.fetch(id);
+        return oUser.orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @PostMapping("/user/create")
     public String create(@Validated(value = ValidGroup.Crud.Create.class) @RequestBody User user) {
         log.info("create user:{}", user);
-        userService.addUser(user);
-        return "user created";
+        userService.saveUser(user);
+        return "created success.";
     }
 
     @PostMapping("/user/update")
     public String update(@Validated(value = ValidGroup.Crud.Update.class) @RequestBody User user) {
         log.info("update user:{}", user);
-        return "update success";
-    }
-
-    @PostMapping("/user/update2")
-    public String update2(@Validated User user) {
-        return "update 2";
-    }
-
-    @GetMapping("/text")
-    public String text() {
-        log.info("Test text");
-        return "hello spring boot";
+        userService.saveUser(user);
+        return "update success.";
     }
 
     @GetMapping("/exception")

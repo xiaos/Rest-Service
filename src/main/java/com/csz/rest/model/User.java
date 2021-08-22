@@ -3,7 +3,6 @@ package com.csz.rest.model;
 import com.csz.rest.validation.EnumString;
 import com.csz.rest.validation.ValidGroup;
 import lombok.Data;
-import lombok.Generated;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
